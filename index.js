@@ -1,34 +1,11 @@
 import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 
-const pre_files = [
-    "pre_cleaned/participant_11_pre_combined.csv",
-    "pre_cleaned/participant_12_pre_combined.csv",
-    "pre_cleaned/participant_13_pre_combined.csv",
-    "pre_cleaned/participant_14_pre_combined.csv",
-    "pre_cleaned/participant_15_pre_combined.csv",
-    "pre_cleaned/participant_16_pre_combined.csv",
-    "pre_cleaned/participant_17_pre_combined.csv",
-    "pre_cleaned/participant_18_pre_combined.csv",
-    "pre_cleaned/participant_22_pre_combined.csv",
-    "pre_cleaned/participant_23_pre_combined.csv",
-    "pre_cleaned/participant_24_pre_combined.csv",
-];
-
-const post_files = [
-    "post_cleaned/participant_11_post_combined.csv",
-    "post_cleaned/participant_12_post_combined.csv",
-    "post_cleaned/participant_13_post_combined.csv",
-    "post_cleaned/participant_14_post_combined.csv",
-    "post_cleaned/participant_15_post_combined.csv",
-    "post_cleaned/participant_16_post_combined.csv",
-    "post_cleaned/participant_17_post_combined.csv",
-    "post_cleaned/participant_18_post_combined.csv",
-    "post_cleaned/participant_22_post_combined.csv",
-    "post_cleaned/participant_23_post_combined.csv",
-    "post_cleaned/participant_24_post_combined.csv",
-];
-
-async function plot_data(file, chartId) {
+const when = ["pre", "post"];
+const types = ["baseline", "cognitive", "survey"];
+const measured = ["bvp", "eda", "PPG GREEN", "temp"];
+const bvp_files = when.map(w => types.map(t =>`averages/${w}/${t}/averaged_bvp_measurements.csv`)).flat(2);
+console.log(bvp_files);
+async function plot_bvps(file, chartId) {
     // Set dimensions and margins for the charts
     const margin = { top: 20, right: 30, bottom: 30, left: 40 },
         width = 600 - margin.left - margin.right,
@@ -105,5 +82,5 @@ async function plot_data(file, chartId) {
 
 // Create multiple plots
 pre_files.forEach((file, index) => {
-    plot_data(file, `chart${index + 1}`);
+    plot_bvps(file, `chart${index + 1}`);
 });
