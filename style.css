@@ -1,15 +1,40 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 0 auto;
+    padding: 20px;
+    max-width: 1200px;
+}
+
+h1, h2, h3 {
+    width: 100%;
+    text-align: center;
+    margin: 20px 0;
+}
+
 .slideshow-container {
     position: relative;
-    max-width: 100%;
-    margin: auto;
+    max-width: 800px;  /* Set a specific max-width */
+    width: 100%;
+    margin: 20px auto;
 }
 
 .slide {
     display: none;
+    margin: 0 auto;
 }
 
 .slide:first-child {
     display: block;
+}
+
+.slideshow-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px 0;
 }
 
 .prev, .next {
@@ -34,4 +59,23 @@
 
 .prev:hover, .next:hover {
     background-color: rgba(0,0,0,0.8);
+}
+
+/* Center the SVG elements */
+svg {
+    display: block;
+    margin: 0 auto;
+}
+
+/* Center the filter container and dropdowns */
+.filter-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+select {
+    padding: 5px;
+    margin: 0 5px;
 }
