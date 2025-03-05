@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <script type="module" src="index.js"></script>
-    <script type="module" src="interactive_viz.js"></script>
 </head>
 <body>
     <h1>Gamify Unplugged: How Gamifying Surveys can Reduce Cognitive Load</h1>
@@ -13,14 +13,12 @@
 
     <!-- Interactive Visualization-->
     <!-- Drop-down menu -->
-    <select id="dropdown">
-        <option value="option1">Option 1</option>
-        <option value="option2">Option 2</option>
-    </select>
-
-    <!-- SVG container -->
-    <svg width="600" height="400"></svg>
-
+    <h2>Mean Visualization of Pre vs Post Gamification Across all Measurements and Periods</h2>
+    <div id="chart"></div>
+    <script src="interactive_viz.js"></script>
+    <script>
+        createInteractiveChart("chart");
+    </script>
     <div class="plots"></div>
 </body>
 </html>
