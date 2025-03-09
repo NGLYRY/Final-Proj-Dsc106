@@ -18,7 +18,7 @@ const participants = ["Participant_11", "Participant_12", "Participant_13",
 
 // Generate file paths for each measurement type
 const generateFiles = (measureType) => {
-    return when.map(w => types.map(t => `./averages/${w}/${t}/averaged_${measureType}_measurements.csv`)).flat(2);
+    return when.map(w => types.map(t => `../averages/${w}/${t}/averaged_${measureType}_measurements.csv`)).flat(2);
 };
 
 // Create file lists for each measurement

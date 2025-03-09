@@ -48,7 +48,7 @@ function createInteractiveChart(containerId) {
     // Load data
     // Update the getFilePath function to handle both pre and post
     function getFilePath(type1, type2, period) {
-      return `averages/${period}/${type1}/averaged_${type2}_measurements.csv`;
+      return `../averages/${period}/${type1}/averaged_${type2}_measurements.csv`;
     }
     
     // Update the updateChart function

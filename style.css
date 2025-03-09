@@ -79,3 +79,10 @@ select {
     padding: 5px;
     margin: 0 5px;
 }
+
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+}
