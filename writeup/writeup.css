@@ -1,0 +1,57 @@
+/* Essential hiding functionality */
+.hidden {
+    display: none !important;
+}
+
+/* Basic layout structure */
+.main-content {
+    display: flex;
+    flex-direction: row;
+}
+
+/* Visualization panel basic structure */
+.visualization-panel {
+    flex: 3;
+}
+
+/* Toggle container basic structure */
+.toggle-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 150px;
+}
+
+/* Basic vertical alignment for options */
+.toggle-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Narrative panel styling */
+.narrative-panel {
+    flex: 2;
+}
+
+/* Hide all narratives by default */
+.narrative {
+    display: none;
+}
+
+/* Show only active narratives */
+.narrative.active {
+    display: block;
+}
+
+/* Prevent text selection on clickable elements */
+.tab-item, .toggle-options label {
+    user-select: none;
+    cursor: pointer;
+}
+
+/* Basic tab layout */
+.timeline-tabs {
+    display: flex;
+    justify-content: center;
+}

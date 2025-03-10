@@ -3,23 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../style.css">
+    <title>Cognitive Journey Dashboard</title>
+    <link rel="stylesheet" href="writeup.css">
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script type="module" src="plots.js"></script>
-    <script type='module' src='../global.js'></script>
-    <title>Takeaway</title>
 </head>
 <body>
-        <!-- Interactive Visualization-->
-    <!-- Drop-down menu -->
-    <h2>Mean Visualization of Pre vs Post Gamification Across all Measurements and Periods</h2>
-    <div id="chart"></div>
-    <script src="interactive_viz.js"></script>
-    <script>
-        createInteractiveChart("chart");
-    </script>
-    <div class="plots"></div>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <h1>Tracking the Cognitive Journey: From Baseline to Gamified Survey Outcomes</h1>
+        </header>
+        
+        <!-- Navigation / Timeline Bar -->
+        <div class="timeline-nav">
+            <div class="timeline-tabs">
+                <span class="tab-item active" data-phase="baseline">Baseline</span>
+                <span class="tab-separator">|</span>
+                <span class="tab-item" data-phase="cognitive">Cognitive</span>
+                <span class="tab-separator">|</span>
+                <span class="tab-item" data-phase="survey">Survey</span>
+            </div>
 
+        <div id="toggle-container" class="toggle-container hidden">
+            <div class="toggle-title">Select data type:</div>
+            <div class="toggle-options">
+                <label>
+                    <input type="radio" name="dataType" value="bvp"> BVP
+                </label>
+                <label>
+                    <input type="radio" name="dataType" value="eda"> EDA
+                </label>
+            </div>
+        </div>
+        
+        <!-- Main Visualization Area -->
+        <main class="main-content">
+            <!-- D3.js Visualization Panel -->
+            <div class="visualization-panel">
+                <div id="visualization-container"></div>
+            </div>
+            
+            <!-- Narrative Text Panel -->
+            <div class="narrative-panel">
+                <div id="narrative-content">
+                    <h2>Baseline Phase</h2>
+                    <div id="baseline-narrative" class="narrative active">
+                        <p>This panel shows baseline measurements before any cognitive tasks or surveys were administered.</p>
+                        <p>Key insights about the baseline data will appear here.</p>
+                    </div>
+                    <div id="cognitive-narrative" class="narrative">
+                        <p>This panel shows measurements during cognitive tasks.</p>
+                        <p>Key insights about the cognitive phase data will appear here.</p>
+                    </div>
+                    <div id="survey-narrative" class="narrative">
+                        <p>This panel shows measurements during the survey phase.</p>
+                        <p>Toggle between EDA and BVP measurements to see different physiological responses.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+            <p>Study details: Data collected from participants undergoing cognitive assessment and surveys.</p>
+            <p>Data sources: Physiological measurements (EDA, BVP) captured during baseline, cognitive tasks, and surveys.</p>
+            <p>© 2025 DSC106 Final Project</p>
+        </footer>
+    </div>
+    
+    <script src="interactive_viz.js"></script>
+    <script src="dashboard.js"></script>
     <h2>How each participant responded to the pre vs post-gamification survey across measures</h2>
 
     <h3>BVP</h3>
