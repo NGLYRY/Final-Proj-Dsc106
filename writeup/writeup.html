@@ -4,15 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cognitive Journey Dashboard</title>
-    <link rel="stylesheet" href="writeup.css">
+    <link rel="stylesheet" href="https://unpkg.com/nes.css/css/nes.min.css">
+    <link rel="stylesheet" href="../style.css">
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script typer="module" src="global.js"></script>    
+    <script type="module" src="../global.js"></script>    
 </head>
 <body>
     <div class="dashboard-container">
         <!-- Header -->
         <header class="dashboard-header">
-            <h1>Tracking the Cognitive Journey: From Baseline to Gamified Survey Outcomes</h1>
+            <h1 class="nes-text is-primary custom-title">Tracking the Cognitive Journey: From Baseline to Gamified Survey Outcomes</h1>
         </header>
         
         <!-- Navigation / Timeline Bar -->
@@ -24,6 +25,7 @@
                 <span class="tab-separator">|</span>
                 <span class="tab-item" data-phase="survey">Survey</span>
             </div>
+        </div>
 
         <div id="toggle-container" class="toggle-container hidden">
             <div class="toggle-title">Select data type:</div>

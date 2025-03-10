@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="https://unpkg.com/nes.css/css/nes.min.css">
     <link rel="stylesheet" href="style.css">
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script type='module' src='global.js'></script>
@@ -11,15 +12,28 @@
 </head>
 <body>
     <header>
-        <h1>Gamify Unplugged: How Gamifying Surveys can Reduce Cognitive Load</h1>
-        <p id="introduction">
-            Engagement is a growing demand in the digital age and is advantagous for the user and developer to understand methods
-            to lessen cognitive load of potentially tedious tasks as people grow to struggle with focus.
+        <h1 class="nes-text is-primary custom-title">Gamify Unplugged: How Gamifying Surveys can Reduce Cognitive Load</h1>
+        <p id="introduction" class="nes-text">
+            In today's digital age, it is important for both users and developers to understand the relationship between cognitive load and productivity. Cognitive load refers to the amount of mental energy required to interpret and complete a task. Learning how to reduce cognitive load can improve user productivity, help deal with short attention spans, and encourage the retention of information—essential for new technology and the completion of day-to-day tasks. 
         </p>
     </header>
 
-    <div class='survey'>
-        
+    <div class="black-line"></div> 
+
+    <p class="nes-text">
+        One way to minimize cognitive load is through gamification—the act of incorportating game-like elements into non-game settings. To further understand this idea, below we present our own take on a "gamified" survey!
+    </p>
+
+    <!-- Green Start Button -->
+    <button id="start-button" class="nes-btn is-success">Start</button>
+
+    <div class="survey-container">
+        <div class="survey"></div>
+    </div>
+
+    <div class="progress-container" id="progress-container" style="display: none;">
+        <h1 class="nes-text progress-title">Progress</p>
+        <progress class="nes-progress is-primary" id="survey-progress" value="0" max="100"></progress>
     </div>
 </body>
 </html>

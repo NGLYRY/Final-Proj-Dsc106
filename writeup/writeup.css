@@ -1,3 +1,11 @@
+@charset "utf-8";
+@import url("https://fonts.googleapis.com/css?family=Press+Start+2P");
+
+/* Apply the NES font to all elements */
+body, h1, h2, h3, p, ul, li, label, input, span, div, nav, a {
+    font-family: 'Press Start 2P', cursive;
+}
+
 /* Essential hiding functionality */
 .hidden {
     display: none !important;
@@ -47,11 +55,16 @@
 /* Prevent text selection on clickable elements */
 .tab-item, .toggle-options label {
     user-select: none;
-    cursor: pointer;
+    cursor: url('cursor.png'), auto; /* Use custom cursor */
 }
 
 /* Basic tab layout */
 .timeline-tabs {
     display: flex;
     justify-content: center;
+}
+
+/* Custom cursor for interactive elements */
+nav a, .tab-item, .toggle-options label, input[type="checkbox"], button {
+    cursor: url('cursor.png'), auto; /* Use custom cursor */
 }
