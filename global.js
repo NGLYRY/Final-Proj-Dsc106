@@ -1,8 +1,8 @@
 console.log("global.js loaded");
 
 let pages = [
-    { url: 'Final-Proj-Dsc106/', title: 'Survey' },
-    { url: 'Final-Proj-Dsc106/writeup/', title: 'Writeup'}
+    { url: '', title: 'Survey' },
+    { url: 'writeup/', title: 'Writeup'}
   ];
   
   // Detect if we are on the home page using a class in the <html> element
