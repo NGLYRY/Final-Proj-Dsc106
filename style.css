@@ -208,3 +208,28 @@ li {
     margin-top: 20px; /* Add some space above the button */
 }
 
+/* Shows and not shows questions based on listeners */
+
+.visible {
+    display: block !important;
+}
+
+.q1 {
+    display: none;
+}
+
+.q2 {
+    display: none;
+}
+
+.q3 {
+    display: none;
+}
+
+.q4 {
+    display: none;
+}
+
+.q5 {
+    display: none;
+}

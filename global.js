@@ -1,7 +1,7 @@
 console.log("global.js loaded");
 
 let pages = [
-    { url: '../survey/index.html', title: 'Survey' },
+    { url: '../index.html', title: 'Survey' },
     { url: '../writeup/writeup.html', title: 'Writeup' }
   ];
   
