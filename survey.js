@@ -5,6 +5,7 @@
 
 const survey = document.querySelector('.survey');
 
+const url = '../lib/questions.json';
 async function fetchJSON(url) {
     try {
         const response = await fetch(url);
@@ -61,7 +62,7 @@ function createQuestion(question, index) {
         label.appendChild(span);
         li.appendChild(label);
         ul.appendChild(li);
-        
+        // make the next question visible when an answer is chosen 
         input.addEventListener('change', function () {
             if (input.checked) {
                 const nextQuestion = document.querySelector(`.q${index + 2}`);
@@ -136,6 +137,6 @@ document.getElementById('start-button').addEventListener('click', function () {
     }
 });
 
-fetchJSON('../lib/questions.json').then((questions) => {
+fetchJSON(url).then((questions) => {
     createSurvey(questions);
 });
