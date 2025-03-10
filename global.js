@@ -1,24 +1,22 @@
 console.log("global.js loaded");
 
 let pages = [
-    { url: '', title: 'Survey'},
+    { url: '', title: 'Survey' },
     { url: 'writeup/', title: 'Writeup'}
   ];
   
+  // Detect if we are on the home page using a class in the <html> element
+  const ARE_WE_HOME = document.documentElement.classList.contains('home');
+
   let nav = document.createElement('nav');
   document.body.prepend(nav);
-
-  const ARE_WE_HOME = document.documentElement.classList.contains('home');
 
   for (let p of pages) {
     let url = p.url;
     let title = p.title;
-    
-    if (ARE_WE_HOME) {
-      url = url ? url : 'index.html';
-    } else {
-      url = url ? url : '../index.html';
-    }
+
+    // Adjust URL for relative paths if we're not on the home page
+    url = !ARE_WE_HOME && !url.startsWith('http') ? '../' + url : url;
 
     let a = document.createElement('a');
     a.href = url;
