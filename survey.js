@@ -51,6 +51,7 @@ function createQuestion(question, index) {
         input.name = `question${index + 1}`;
         input.value = `option${i + 1}`;
         input.classList.add('custom-checkbox');
+        input.disabled = true; // Initially disable the checkboxes
 
         const span = document.createElement('span');
         span.textContent = answer.text;
@@ -107,10 +108,16 @@ function createSurvey(questions) {
     });
 }
 
-// Show progress bar when start button is clicked
+// Show progress bar and enable checkboxes when start button is clicked
 document.getElementById('start-button').addEventListener('click', function () {
     document.getElementById('progress-container').style.display = 'block';
     this.style.display = 'none'; // Hide the start button
+
+    // Enable all checkboxes
+    const checkboxes = document.querySelectorAll('.custom-checkbox input[type="checkbox"]');
+    checkboxes.forEach(checkbox => {
+        checkbox.disabled = false;
+    });
 });
 
 fetchJSON('../lib/questions.json').then((questions) => {
