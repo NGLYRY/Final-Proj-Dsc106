@@ -1,0 +1,54 @@
+[
+    {
+        
+        "question": "New ideas and projects sometimes distract me from previous ones.",
+        "answers": [
+            { "id": "1", "text": "Very Much Like Me" },
+            { "id": "2", "text": "Mostly Like Me" },
+            { "id": "3", "text": "Somewhat Like Me" },
+            { "id": "4", "text": "Not Much Like Me" },
+            { "id": "5", "text": "Not Like Me At All" }
+        ]
+    },
+    {
+        "question": "Setbacks don’t discourage me. I don’t give up easily.",
+        "answers": [
+            { "id": "1", "text": "Very Much Like Me" },
+            { "id": "2", "text": "Mostly Like Me" },
+            { "id": "3", "text": "Somewhat Like Me" },
+            { "id": "4", "text": "Not Much Like Me" },
+            { "id": "5", "text": "Not Like Me At All" }
+        ]
+    },
+    {
+        "question": "I often set a goal but later choose to pursue a different one.",
+        "answers": [
+            { "id": "1", "text": "Very Much Like Me" },
+            { "id": "2", "text": "Mostly Like Me" },
+            { "id": "3", "text": "Somewhat Like Me" },
+            { "id": "4", "text": "Not Much Like Me" },
+            { "id": "5", "text": "Not Like Me At All" }
+        ]
+        
+    },
+    {
+        "question": "I am a hard worker.",
+        "answers": [
+            { "id": "1", "text": "Very Much Like Me" },
+            { "id": "2", "text": "Mostly Like Me" },
+            { "id": "3", "text": "Somewhat Like Me" },
+            { "id": "4", "text": "Not Much Like Me" },
+            { "id": "5", "text": "Not Like Me At All" }
+        ]
+    },
+    {
+        "question": "I have difficulty maintaining my focus on projects that take more than a few months to complete.",
+        "answers": [
+            { "id": "1", "text": "Very Much Like Me" },
+            { "id": "2", "text": "Mostly Like Me" },
+            { "id": "3", "text": "Somewhat Like Me" },
+            { "id": "4", "text": "Not Much Like Me" },
+            { "id": "5", "text": "Not Like Me At All" }
+        ]
+}
+]
