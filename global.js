@@ -14,7 +14,11 @@ let pages = [
     let url = p.url;
     let title = p.title;
     
-    url = !ARE_WE_HOME && !url.startsWith('http') ? '../' + url : url;
+    if (ARE_WE_HOME) {
+      url = url ? url : 'index.html';
+    } else {
+      url = url ? url : '../index.html';
+    }
 
     let a = document.createElement('a');
     a.href = url;
