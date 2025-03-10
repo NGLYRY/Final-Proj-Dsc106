@@ -2,7 +2,7 @@ console.log("global.js loaded");
 
 let pages = [
     { url: '../index.html', title: 'Survey' },
-    { url: '../writeup/writeup.html', title: 'Writeup' }
+    { url: '/writeup/writeup.html', title: 'Writeup' }
   ];
   
   let nav = document.createElement('nav');
