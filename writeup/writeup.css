@@ -63,8 +63,3 @@ body, h1, h2, h3, p, ul, li, label, input, span, div, nav, a {
     display: flex;
     justify-content: center;
 }
-
-/* Custom cursor for interactive elements */
-nav a, .tab-item, .toggle-options label, input[type="checkbox"], button {
-    cursor: url('cursor.png'), auto; /* Use custom cursor */
-}

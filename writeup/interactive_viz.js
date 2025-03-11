@@ -82,73 +82,168 @@ function createInteractiveChart(containerId) {
             const allData = [...preData, ...postData];
             
             // Add X axis
+            let xDomain;
+            if (selectedType2 === 'eda') {
+                const preMax = d3.max(preData, d => d.time);
+                const postMax = d3.max(postData, d => d.time);
+                xDomain = [0, Math.min(preMax, postMax)];
+            } else {
+                xDomain = d3.extent(allData, d => d.time);
+            }
+
+            // Filter data to match x-axis domain
+            preData = preData.filter(d => d.time >= xDomain[0] && d.time <= xDomain[1]);
+            postData = postData.filter(d => d.time >= xDomain[0] && d.time <= xDomain[1]);
+            
+            // Add X axis
             const x = d3.scaleLinear()
-                .domain(d3.extent(allData, d => d.time))
+                .domain(xDomain)
                 .range([0, width]);
-            svg.append("g")
-                .attr("transform", `translate(0,${height})`)
-                .call(d3.axisBottom(x));
       
             // Add Y axis
+            let yDomain = selectedType2 === 'bvp' ? [-150, 150] : 
+                         selectedType2 === 'eda' ? [0.2, 1.6] : 
+                         d3.extent(allData, d => d.value);
+
+            // Filter data to match both x and y axis domains
+            preData = preData.filter(d => 
+                d.time >= xDomain[0] && 
+                d.time <= xDomain[1] && 
+                d.value >= yDomain[0] && 
+                d.value <= yDomain[1]
+            );
+            postData = postData.filter(d => 
+                d.time >= xDomain[0] && 
+                d.time <= xDomain[1] && 
+                d.value >= yDomain[0] && 
+                d.value <= yDomain[1]
+            );
+
             const y = d3.scaleLinear()
-                .domain(d3.extent(allData, d => d.value))
+                .domain(yDomain)
                 .range([height, 0]);
+
+            // Style the axes with better fonts
             svg.append("g")
-                .call(d3.axisLeft(y));
-      
-            // Line generator
+                .attr("transform", `translate(0,${height})`)
+                .call(d3.axisBottom(x))
+                .style("font-family", "'Gill Sans', sans-serif")
+                .style("font-size", "12px");
+            
+            svg.append("g")
+                .call(d3.axisLeft(y))
+                .style("font-family", "'Gill Sans', sans-serif")
+                .style("font-size", "12px");
+            
+
+            // Add gridlines
+            svg.append("g")
+                .attr("class", "grid")
+                .attr("opacity", 0.1)
+                .call(d3.axisRight(y)
+                    .tickSize(width)
+                    .tickFormat("")
+                );
+            
+            // Create gradient definitions
+            const gradientPre = svg.append("defs")
+                .append("linearGradient")
+                .attr("id", "gradientPre")
+                .attr("gradientTransform", "rotate(90)");
+            gradientPre.append("stop")
+                .attr("offset", "0%")
+                .attr("stop-color", "#ff6b6b");
+            gradientPre.append("stop")
+                .attr("offset", "100%")
+                .attr("stop-color", "#ff8787");
+
+            const gradientPost = svg.append("defs")
+                .append("linearGradient")
+                .attr("id", "gradientPost")
+                .attr("gradientTransform", "rotate(90)");
+            gradientPost.append("stop")
+                .attr("offset", "0%")
+                .attr("stop-color", "#4dabf7");
+            gradientPost.append("stop")
+                .attr("offset", "100%")
+                .attr("stop-color", "#74c0fc");
+
+            // Add smoothed lines with gradients
             const line = d3.line()
                 .defined(d => !isNaN(d.value) && !isNaN(d.time))
+                .curve(d3.curveCatmullRom)
                 .x(d => x(d.time))
                 .y(d => y(d.value));
-      
-            // Add the pre line
-            svg.append("path")
-                .datum(preData)
-                .attr("fill", "none")
-                .attr("stroke", "red")  // Different color for pre
-                .attr("stroke-width", 1.5)
-                .attr("d", line);
-      
+
             // Add the post line
             svg.append("path")
                 .datum(postData)
                 .attr("fill", "none")
-                .attr("stroke", "steelblue")  // Original color for post
-                .attr("stroke-width", 1.5)
+                .attr("stroke", "url(#gradientPost)")
+                .attr("stroke-width", 2.5)
+                .attr("opacity", 0.7)  // Add transparency
                 .attr("d", line);
-      
-            // Add legend
+
+            // Add the pre line
+            svg.append("path")
+                .datum(preData)
+                .attr("fill", "none")
+                .attr("stroke", "url(#gradientPre)")
+                .attr("stroke-width", 2.5)
+                .attr("opacity", 0.7)  // Add transparency
+                .attr("d", line);
+
+            
+
+            // Enhanced legend
             const legend = svg.append("g")
-                .attr("font-family", "sans-serif")
-                .attr("font-size", 10)
+                .attr("font-family", "'Gill Sans', sans-serif")
+                .attr("font-size", "12px")
                 .attr("text-anchor", "start")
                 .selectAll("g")
                 .data(["Pre", "Post"])
                 .enter().append("g")
-                .attr("transform", (d, i) => `translate(0,${i * 20})`);
-      
+                .attr("transform", (d, i) => `translate(${width - 100},${i * 25 + 10})`);
+
             legend.append("rect")
-                .attr("x", width - 60)
-                .attr("width", 19)
-                .attr("height", 19)
-                .attr("fill", d => d === "Pre" ? "red" : "steelblue");
-      
+                .attr("width", 15)
+                .attr("height", 15)
+                .attr("rx", 2)
+                .attr("fill", d => d === "Pre" ? "#ff6b6b" : "#4dabf7");
+
             legend.append("text")
-                .attr("x", width - 35)
-                .attr("y", 9.5)
-                .attr("dy", "0.32em")
+                .attr("x", 20)
+                .attr("y", 12)
                 .text(d => d);
-            
-            // Add title based on current selection
+
+            // Enhanced title and labels
             svg.append("text")
                 .attr("x", width / 2)
-                .attr("y", -20)  // Positioned better within the top margin
+                .attr("y", -margin.top/2)
                 .attr("text-anchor", "middle")
-                .style("font-size", "14px")
+                .style("font-family", "'Gill Sans', sans-serif")
+                .style("font-size", "16px")
                 .style("font-weight", "bold")
                 .text(`${selectedType1.charAt(0).toUpperCase() + selectedType1.slice(1)} Phase - ${selectedType2.toUpperCase()} Measurements`);
-      
+
+            svg.append("text")
+                .attr("x", width / 2)
+                .attr("y", height + margin.bottom)
+                .attr("text-anchor", "middle")
+                .style("font-family", "'Gill Sans', sans-serif")
+                .style("font-size", "14px")
+                .text("Time (seconds)");
+
+            svg.append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("x", -(height / 2))
+                .attr("y", -margin.left + 15)
+                .attr("text-anchor", "middle")
+                .style("font-family", "'Gill Sans', sans-serif")
+                .style("font-size", "14px")
+                .text(selectedType2.toUpperCase() + (selectedType2 === 'bvp' ? " Value (µV)" : " Value"));
+
+
         }).catch(function(error) {
             console.error("Error loading the data:", error);
             svg.append("text")
