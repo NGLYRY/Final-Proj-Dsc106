@@ -73,6 +73,6 @@ console.log("survey-2.js loaded");
      });
  }
  
- fetchJSON('../lib/questions.json').then((questions) => {
+ fetchJSON('lib/questions.json').then((questions) => {
      createSurvey(questions);
  });
