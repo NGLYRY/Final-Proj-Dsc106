@@ -36,7 +36,6 @@ body, h1, h2, h3, p, ul, li, label, input, span, div, nav, a {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    cursor: url('cursor.png'), auto;
 }
 
 /* Narrative panel styling */
