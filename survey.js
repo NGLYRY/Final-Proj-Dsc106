@@ -5,7 +5,7 @@
 
 const survey = document.querySelector('.survey');
 
-const url = 'lib/questions.json';
+const url = '../lib/questions.json';
 async function fetchJSON(url) {
     try {
         const response = await fetch(url);

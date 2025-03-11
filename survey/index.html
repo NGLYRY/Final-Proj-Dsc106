@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gamified Survey</title>
+    <link rel="stylesheet" href="https://unpkg.com/nes.css/css/nes.min.css">
+    <link rel="stylesheet" href="../style.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script type='module' src='../global.js'></script>
+    <script type='module' src='../survey.js'></script>
+    <link rel="icon" href="favicon.png" type="image/png">
+</head>
+<body>
+    <header>
+        <h1 class="nes-text is-primary custom-title">Gamified Survey</h1>
+    </header>
+
+    <p class="nes-text">
+        put text later
+    </p>
+
+    <div class="black-line"></div> 
+
+    <p class="nes-text">
+        Welcome to the gamified survey! Please answer the questions below.
+    </p>
+
+    <!-- Green Start Button -->
+    <button id="start-button" class="nes-btn is-success">Start</button>
+
+    <div class="survey-container">
+        <div class="survey"></div>
+    </div>
+
+    <div class="progress-container" id="progress-container" style="display: none;">
+        <h1 class="nes-text progress-title">Progress</h1>
+        <progress class="nes-progress is-primary" id="survey-progress" value="0" max="100"></progress>
+    </div>
+</body>
+</html>
