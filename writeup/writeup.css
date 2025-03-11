@@ -2,7 +2,7 @@
 @import url(https://fonts.googleapis.com/css?family=Press+Start+2P);
 
 /* Apply the NES font to all elements */
-body, h1, h2, h3, ul, li, label, input, span, div, nav, a {
+body, h1, h2, h3, ul, label, input, span, div, nav, a {
     font-family: 'Press Start 2P', cursive;
 }
 
@@ -16,7 +16,7 @@ body {
     max-width: 1200px;
 }
 
-p {
+p, li {
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 1.5em;
     text-align: left;
