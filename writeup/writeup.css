@@ -1,11 +1,40 @@
 @charset "utf-8";
-@import url("https://fonts.googleapis.com/css?family=Press+Start+2P");
+@import url(https://fonts.googleapis.com/css?family=Press+Start+2P);
 
 /* Apply the NES font to all elements */
-body, h1, h2, h3, p, ul, li, label, input, span, div, nav, a {
+body, h1, h2, h3, ul, li, label, input, span, div, nav, a {
     font-family: 'Press Start 2P', cursive;
 }
 
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 0 auto;
+    padding: 20px;
+    max-width: 1200px;
+}
+
+p {
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 1.5em;
+    text-align: left;
+}
+
+.custom-title {
+    font-size: 2.5em; /* Adjust the font size as needed */
+    text-align: center; /* Center the text */
+    margin-top: 20px; /* Add some space above the title */
+    margin-bottom: 60px; /* Add some space below the title */
+    text-shadow: 3px 3px #000; /* Add a shadow to the text */
+}
+
+h1, h2, h3 {
+    width: 100%;
+    text-align: center;
+    margin: 20px 0; /* Adjust the margin as needed */
+}
 /* Essential hiding functionality */
 .hidden {
     display: none !important;
@@ -62,4 +91,28 @@ body, h1, h2, h3, p, ul, li, label, input, span, div, nav, a {
 .timeline-tabs {
     display: flex;
     justify-content: center;
+}
+
+/* Graph text styling - apply Gill Sans to all SVG text elements */
+svg text {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, sans-serif !important;
+    font-size: 12px;
+}
+
+/* Style specific elements in the graph */
+.axis text {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, sans-serif !important;
+    fill: #333;
+}
+
+.axis-label, .legend text {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, sans-serif !important;
+    font-weight: 500;
+}
+
+/* Chart title styling */
+svg .chart-title {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, sans-serif !important;
+    font-size: 14px;
+    font-weight: bold;
 }
