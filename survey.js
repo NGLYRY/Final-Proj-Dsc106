@@ -5,6 +5,7 @@
 
 const survey = document.querySelector('.survey');
 
+const url = 'lib/questions.json';
 async function fetchJSON(url) {
     try {
         const response = await fetch(url);
@@ -24,7 +25,7 @@ async function fetchJSON(url) {
 
 function createQuestion(question, index) {
     const qDiv = document.createElement('div');
-    qDiv.classList.add('question', 'nes-container', 'is-rounded');
+    qDiv.classList.add('question', 'nes-container', 'is-rounded', `q${index + 1}`);
 
     const qLabel = document.createElement('h3');
     qLabel.classList.add('nes-text');
@@ -68,11 +69,21 @@ function createQuestion(question, index) {
         label.appendChild(span);
         li.appendChild(label);
         ul.appendChild(li);
+        // make the next question visible when an answer is chosen 
+        input.addEventListener('change', function () {
+            if (input.checked) {
+                const nextQuestion = document.querySelector(`.q${index + 2}`);
+                if (nextQuestion) {
+                    nextQuestion.classList.add('visible');
+                }
+            }
+        });
     });
 
     qDiv.appendChild(ul);
 
     survey.appendChild(qDiv);
+    
 }
 
 function createSurvey(questions) {
@@ -125,8 +136,14 @@ document.getElementById('start-button').addEventListener('click', function () {
     checkboxes.forEach(checkbox => {
         checkbox.disabled = false;
     });
+
+    // Make the first question visible
+    const firstQuestion = document.querySelector('.q1');
+    if (firstQuestion) {
+        firstQuestion.classList.add('visible');
+    }
 });
 
-fetchJSON('../lib/questions.json').then((questions) => {
+fetchJSON(url).then((questions) => {
     createSurvey(questions);
 });
