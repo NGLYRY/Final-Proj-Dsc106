@@ -39,7 +39,7 @@ function createQuestion(question, index) {
 
     const ul = document.createElement('ul');
 
-    const colors = ['is-success', 'is-primary', 'is-disabled', 'is-warning', 'is-error'];
+    const colors = ['rgb(5, 125, 5)', 'rgb(20, 89, 199)', 'rgb(90, 87, 87)', 'rgb(231, 161, 11)', 'rgb(176, 22, 22)'];
 
     question.answers.forEach((answer, i) => {
         const li = document.createElement('li');
@@ -55,7 +55,14 @@ function createQuestion(question, index) {
 
         const span = document.createElement('span');
         span.textContent = answer.text;
-        span.classList.add('nes-text', colors[i % colors.length]); // Apply different colors
+
+        // Apply different colors
+        const color = colors[i % colors.length];
+        if (color.startsWith('rgb')) {
+            span.style.color = color;
+        } else {
+            span.classList.add(color);
+        }
 
         label.appendChild(input);
         label.appendChild(span);
