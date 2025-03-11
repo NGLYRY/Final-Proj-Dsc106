@@ -116,3 +116,73 @@ svg .chart-title {
     font-size: 14px;
     font-weight: bold;
 }
+
+/* Tab hover effect with blinking select button */
+.tab-item {
+    position: relative;
+    padding-left: 30px; /* Make space for the button */
+    transition: all 0.3s ease;
+}
+
+/* Create the select button indicator */
+.tab-item::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px; /* Adjust based on actual image size */
+    height: 20px; /* Adjust based on actual image size */
+    background-image: url('select_button.png'); /* Make sure this path is correct */
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0; /* Hidden by default */
+    transition: opacity 0.2s;
+}
+
+/* Show and animate the indicator on hover */
+.tab-item:hover::before {
+    opacity: 1;
+    animation: blink 0.8s infinite;
+}
+
+/* Define the blinking animation */
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.3; }
+    100% { opacity: 1; }
+}
+
+/* Add proper spacing between tabs */
+.tab-item {
+    margin: 0 15px;
+    padding: 8px 0 8px 30px; /* Added left padding for the icon */
+}
+
+.tab-separator {
+    color: #bdc3c7;
+    font-size: 0.8em;
+    vertical-align: middle;
+}
+
+/* Add big space before footer */
+.footer-container {
+    margin-top: 80px; /* Large gap before footer */
+    padding-top: 30px; /* Additional padding */
+    border-top: 1px solid #eee; /* Optional divider */
+}
+
+/* Make footer content smaller */
+.footer-content {
+    font-size: 0.7em; /* Smaller text */
+    line-height: 1.4;
+}
+
+/* Citation styling */
+.citation {
+    font-size: 0.8em;
+    color: #555;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 10px 20px;
+}
