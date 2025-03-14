@@ -1,139 +1,175 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize the visualization but don't display it yet
-    createInteractiveChart('visualization-container');
+// document.addEventListener('DOMContentLoaded', function() {
+//     // Initialize visualizations for each section with default data type (BVP)
+//     initVisualization('baseline', 'bvp');
+//     initVisualization('cognitive', 'bvp');
+//     initVisualization('survey', 'bvp');
     
-    // Get references to UI elements
-    const tabItems = document.querySelectorAll('.tab-item');
-    const narratives = document.querySelectorAll('.narrative');
-    const toggleContainer = document.getElementById('toggle-container');
-    const dataTypeRadios = document.querySelectorAll('input[name="dataType"]');
-    const visualizationPanel = document.querySelector('.visualization-panel');
-    const narrativePanel = document.querySelector('.narrative-panel');
+//     // Set up data type toggle listeners for each section
+//     setupToggleListeners('baseline');
+//     setupToggleListeners('cognitive');
+//     setupToggleListeners('survey');
     
-    // Add a flag to track if user has made a data type selection
-    let dataTypeSelected = false;
-    let lastSelectedDataType = null;
+//     // Set up scroll indicators
+//     setupScrollIndicators();
+// });
+
+// function initVisualization(phase, dataType) {
+//     // This function will create and render the D3 visualization 
+//     // for the specified phase and data type
+//     console.log(`Initializing ${dataType} visualization for ${phase} phase`);
     
-    // CRITICAL: Hide visualization, narrative panel and toggle container initially
-    if (visualizationPanel) {
-        visualizationPanel.style.display = 'none';
-    }
+//     // Get the visualization container
+//     const container = document.getElementById(`${phase}-visualization`);
     
-    if (narrativePanel) {
-        narrativePanel.style.display = 'none';
-    }
+//     // Clear previous visualizations
+//     container.innerHTML = '';
     
-    // Ensure toggle container is hidden at startup
-    if (toggleContainer) {
-        toggleContainer.classList.add('hidden');
-    }
+//     // Load and render data (placeholder - replace with actual D3 code)
+//     fetchData(phase, dataType)
+//         .then(data => {
+//             renderVisualization(container, data, dataType);
+//         })
+//         .catch(error => {
+//             console.error(`Error loading ${dataType} data for ${phase}:`, error);
+//             container.innerHTML = `<p>Error loading visualization</p>`;
+//         });
+// }
+
+// function fetchData(phase, dataType) {
+//     // Fetch data for the specified phase and data type
+//     // Replace with actual data fetching logic
+//     return new Promise((resolve) => {
+//         // Simulate data fetching with a timeout
+//         setTimeout(() => {
+//             // Sample data structure - replace with actual data
+//             const data = {
+//                 pre: generateSampleData(50),
+//                 post: generateSampleData(50, 0.2)
+//             };
+//             resolve(data);
+//         }, 300);
+//     });
+// }
+
+// function generateSampleData(count, offset = 0) {
+//     // Generate sample data for demonstration
+//     return Array.from({ length: count }, (_, i) => ({
+//         x: i,
+//         y: Math.sin(i * 0.1) + Math.random() * 0.5 + offset
+//     }));
+// }
+
+// function renderVisualization(container, data, dataType) {
+//     // Create a D3 visualization with hover functionality
+//     // This is a placeholder - replace with your actual D3 visualization code
     
-    // Set up tab item click handlers
-    tabItems.forEach(item => {
-        item.addEventListener('click', function() {
-            // Update active tab
-            tabItems.forEach(tab => tab.classList.remove('active'));
-            this.classList.add('active');
-            
-            // Update visible narrative
-            const phase = this.dataset.phase;
-            narratives.forEach(narrative => narrative.classList.remove('active'));
-            document.getElementById(`${phase}-narrative`).classList.add('active');
-            
-            // Always show toggle container
-            toggleContainer.classList.remove('hidden');
-            
-            // Update h2 title to match selected phase
-            const narrativeTitle = document.querySelector('#narrative-content h2');
-            if (narrativeTitle) {
-                narrativeTitle.textContent = phase.charAt(0).toUpperCase() + phase.slice(1) + ' Phase';
-            }
-            
-            // Store the selected phase as a data attribute for later use
-            toggleContainer.dataset.selectedPhase = phase;
-            
-            // If user has already selected a data type before, keep the graph visible
-            // and update it with the new phase and the previously selected data type
-            if (dataTypeSelected && lastSelectedDataType) {
-                if (visualizationPanel) {
-                    visualizationPanel.style.display = 'block';
-                }
-                
-                if (narrativePanel) {
-                    narrativePanel.style.display = 'block';
-                }
-                
-                // Find and select the appropriate radio button
-                dataTypeRadios.forEach(radio => {
-                    if (radio.value === lastSelectedDataType) {
-                        radio.checked = true;
-                    }
-                });
-                
-                // Update the visualization with new phase but same data type
-                updateVisualization(phase, lastSelectedDataType);
-            } else {
-                // First time or no data type selection yet - hide panels and clear radios
-                if (visualizationPanel) {
-                    visualizationPanel.style.display = 'none';
-                }
-                
-                if (narrativePanel) {
-                    narrativePanel.style.display = 'none';
-                }
-                
-                // Clear any previously selected radio button
-                dataTypeRadios.forEach(radio => {
-                    radio.checked = false;
-                });
-            }
-        });
-    });
+//     const width = container.clientWidth;
+//     const height = container.clientHeight;
+//     const margin = { top: 20, right: 30, bottom: 30, left: 40 };
     
-    // Set up data type toggle handlers
-    dataTypeRadios.forEach(radio => {
-        radio.addEventListener('change', function() {
-            // Get the previously selected phase
-            const selectedPhase = toggleContainer.dataset.selectedPhase;
-            
-            // Show the visualization panel and narrative panel now that both selections are made
-            if (visualizationPanel) {
-                visualizationPanel.style.display = 'block';
-            }
-            
-            if (narrativePanel) {
-                narrativePanel.style.display = 'block';
-            }
-            
-            // Set our tracking variables to remember this selection
-            dataTypeSelected = true;
-            lastSelectedDataType = this.value;
-            
-            // Update visualization with the stored phase and selected data type
-            updateVisualization(selectedPhase, this.value);
-        });
-    });
+//     const svg = d3.select(container)
+//         .append("svg")
+//         .attr("width", width)
+//         .attr("height", height);
     
-    // Function to update visualization based on selected phase and data type
-    function updateVisualization(phase, dataType) {
-        // Programmatically set the dropdown values in your existing visualization
-        const select1 = document.getElementById("visualization-container-select1");
-        const select2 = document.getElementById("visualization-container-select2");
-        
-        if (select1 && select2) {
-            // Set values and trigger change events
-            select1.value = phase;
-            select2.value = dataType;
-            
-            // Manually trigger change event - this is crucial
-            const event = new Event('change');
-            select1.dispatchEvent(event);
-            
-            console.log("Updated visualization with:", phase, dataType);
-        } else {
-            console.error("Select elements not found:", 
-                         "visualization-container-select1", 
-                         "visualization-container-select2");
-        }
-    }
-});
+//     // Create tooltip for hover
+//     const tooltip = d3.select(container)
+//         .append("div")
+//         .attr("class", "tooltip")
+//         .style("opacity", 0)
+//         .style("position", "absolute")
+//         .style("background", "white")
+//         .style("padding", "5px")
+//         .style("border", "1px solid #999")
+//         .style("border-radius", "4px")
+//         .style("pointer-events", "none");
+    
+//     // Set up scales, axes, and lines
+//     // Example code - adjust based on your actual data structure
+//     const x = d3.scaleLinear()// filepath: c:\Users\works\Desktop\Classes\DSC106\Final-Proj-Dsc106\writeup\scrolling_dashboard.js
+// document.addEventListener('DOMContentLoaded', function() {
+//     // Initialize visualizations for each section with default data type (BVP)
+//     initVisualization('baseline', 'bvp');
+//     initVisualization('cognitive', 'bvp');
+//     initVisualization('survey', 'bvp');
+    
+//     // Set up data type toggle listeners for each section
+//     setupToggleListeners('baseline');
+//     setupToggleListeners('cognitive');
+//     setupToggleListeners('survey');
+    
+//     // Set up scroll indicators
+//     setupScrollIndicators();
+// });
+
+// function initVisualization(phase, dataType) {
+//     // This function will create and render the D3 visualization 
+//     // for the specified phase and data type
+//     console.log(`Initializing ${dataType} visualization for ${phase} phase`);
+    
+//     // Get the visualization container
+//     const container = document.getElementById(`${phase}-visualization`);
+    
+//     // Clear previous visualizations
+//     container.innerHTML = '';
+    
+//     // Load and render data (placeholder - replace with actual D3 code)
+//     fetchData(phase, dataType)
+//         .then(data => {
+//             renderVisualization(container, data, dataType);
+//         })
+//         .catch(error => {
+//             console.error(`Error loading ${dataType} data for ${phase}:`, error);
+//             container.innerHTML = `<p>Error loading visualization</p>`;
+//         });
+// }
+
+// function fetchData(phase, dataType) {
+//     // Fetch data for the specified phase and data type
+//     // Replace with actual data fetching logic
+//     return new Promise((resolve) => {
+//         // Simulate data fetching with a timeout
+//         setTimeout(() => {
+//             // Sample data structure - replace with actual data
+//             const data = {
+//                 pre: generateSampleData(50),
+//                 post: generateSampleData(50, 0.2)
+//             };
+//             resolve(data);
+//         }, 300);
+//     });
+// }
+
+// function generateSampleData(count, offset = 0) {
+//     // Generate sample data for demonstration
+//     return Array.from({ length: count }, (_, i) => ({
+//         x: i,
+//         y: Math.sin(i * 0.1) + Math.random() * 0.5 + offset
+//     }));
+// }
+
+// function renderVisualization(container, data, dataType) {
+//     // Create a D3 visualization with hover functionality
+//     // This is a placeholder - replace with your actual D3 visualization code
+    
+//     const width = container.clientWidth;
+//     const height = container.clientHeight;
+//     const margin = { top: 20, right: 30, bottom: 30, left: 40 };
+    
+//     const svg = d3.select(container)
+//         .append("svg")
+//         .attr("width", width)
+//         .attr("height", height);
+    
+//     // Create tooltip for hover
+//     const tooltip = d3.select(container)
+//         .append("div")
+//         .attr("class", "tooltip")
+//         .style("opacity", 0)
+//         .style("position", "absolute")
+//         .style("background", "white")
+//         .style("padding", "5px")
+//         .style("border", "1px solid #999")
+//         .style("border-radius", "4px")
+//         .style("pointer-events", "none");
+    

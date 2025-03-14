@@ -15,42 +15,45 @@
         <header class="dashboard-header">
             <h1 class="nes-text is-primary custom-title">Tracking the Cognitive Journey: From Baseline to Gamified Survey Outcomes</h1>
         </header>
-        <p>The survey gamification experiment consisted of three tasks conducted two times with a two-week break between each session. The tasks were: cognitively demanding Stroop test, baseline (no engagement in any activity) and filling in four surveys.</p>
-        <!-- Navigation / Timeline Bar -->
-        <div class="timeline-nav">
-            <div class="timeline-tabs">
-                <span class="tab-item active" data-phase="baseline">1. Baseline</span>
-                <span class="tab-separator">&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <span class="tab-item" data-phase="cognitive">2. Cognitive</span>
-                <span class="tab-separator">&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <span class="tab-item" data-phase="survey">3. Survey</span>
-            </div>
-        </div>
-
-        <div id="toggle-container" class="toggle-container hidden">
-            <div class="toggle-title">Select data type:</div>
-            <div class="toggle-options">
-                <label>
-                    <input type="radio" name="dataType" value="bvp"> BVP
-                </label>
-                <label>
-                    <input type="radio" name="dataType" value="eda"> EDA
-                </label>
-            </div>
+        <p>The survey gamification experiment consisted of three tasks conducted two times with a two-week break between each session. The tasks were: Baseline, Cognitive, and Survey.
+        <br>
+        <br>For the visualizations, we looked at the BVP, EDA, and EEG for different parts of the tasks:
+            <ul>
+                <li><strong>BVP (Blood Volume Pulse)</strong>: Measures blood volume changes to provide insights into cardiovascular responses and stress.</li>
+                <li><strong>EDA (Electrodermal Activity)</strong>: Captures skin conductance fluctuations as an indicator of emotional arousal and sympathetic activity.</li>
+                <li><strong>EEG (Electroencephalogram)</strong>: Records electrical brain activity to reveal brainwave patterns associated with different cognitive states. </li>
+            </ul>
+        </p>
+        <p>Explore the process of the study down below!</p>
+        
+        <!-- Navigation indicators (optional) -->
+        <div class="scroll-indicator">
+            <a href="#baseline-section" class="active">Baseline</a>
+            <a href="#cognitive-section">Cognitive</a>
+            <a href="#survey-section">Survey</a>
         </div>
         
-        <!-- Main Visualization Area -->
-        <main class="main-content">
-            <!-- D3.js Visualization Panel -->
-            <div class="visualization-panel">
-                <div id="visualization-container"></div>
-            </div>
+        <!-- Scrolling Sections -->
+        <!-- Baseline Section -->
+        <section id="baseline-section" class="viz-section">
+            <h2>1. Baseline Phase</h2>
             
-            <!-- Narrative Text Panel -->
-            <div class="narrative-panel">
-                <div id="narrative-content">
-                    <h2>Baseline Phase</h2>
-                    <div id="baseline-narrative" class="narrative active">
+            <div class="section-content">
+                <div class="viz-container">
+                    <div class="data-toggle">
+                        <span>Select data type:</span>
+                        <label>
+                            <input type="radio" name="baseline-dataType" value="bvp" checked> BVP
+                        </label>
+                        <label>
+                            <input type="radio" name="baseline-dataType" value="eda"> EDA
+                        </label>
+                    </div>
+                    <div id="baseline-visualization" class="visualization"></div>
+                </div>
+                
+                <div class="narrative-panel">
+                    <div class="narrative">
                         <p>In the baseline phase, participants were asked to be in a relaxed state for 3 minutes. They were not allowed to perform any tasks to prevent any distractions.</p>
                         <p><strong>Key insights:</strong></p>
                         <ul>
@@ -58,7 +61,30 @@
                             <li>EDA: Post gamified survey group saw a lower starting level of EDA than the pre gamified survey.</li>
                         </ul>
                     </div>
-                    <div id="cognitive-narrative" class="narrative">
+                </div>
+            </div>
+        </section>
+        
+        <!-- Cognitive Section -->
+        <section id="cognitive-section" class="viz-section">
+            <h2>2. Cognitive Phase</h2>
+            
+            <div class="section-content">
+                <div class="viz-container">
+                    <div class="data-toggle">
+                        <span>Select data type:</span>
+                        <label>
+                            <input type="radio" name="cognitive-dataType" value="bvp" checked> BVP
+                        </label>
+                        <label>
+                            <input type="radio" name="cognitive-dataType" value="eda"> EDA
+                        </label>
+                    </div>
+                    <div id="cognitive-visualization" class="visualization"></div>
+                </div>
+                
+                <div class="narrative-panel">
+                    <div class="narrative">
                         <p>In the cognitive phase, the participants were asked to name the ink color of a word which is the name of the color (most often different color than the ink). This was a cognitively challenging task that requires the participants' full focus to choose the right color.</p>
                         <p><strong>Key insights:</strong></p>
                         <ul>
@@ -66,7 +92,30 @@
                             <li>EDA: The post gamificaton survey started at a lower mean EDA value.</li>
                         </ul>
                     </div>
-                    <div id="survey-narrative" class="narrative">
+                </div>
+            </div>
+        </section>
+        
+        <!-- Survey Section -->
+        <section id="survey-section" class="viz-section">
+            <h2>3. Survey Phase</h2>
+            
+            <div class="section-content">
+                <div class="viz-container">
+                    <div class="data-toggle">
+                        <span>Select data type:</span>
+                        <label>
+                            <input type="radio" name="survey-dataType" value="bvp" checked> BVP
+                        </label>
+                        <label>
+                            <input type="radio" name="survey-dataType" value="eda"> EDA
+                        </label>
+                    </div>
+                    <div id="survey-visualization" class="visualization"></div>
+                </div>
+                
+                <div class="narrative-panel">
+                    <div class="narrative">
                         <p>The last portion of the study is the survey gamification experiment. This shows the differences in cognitive activity between a gamified survey and the non-gamified survey.</p>
                         <p><strong>Key insights:</strong></p>
                         <ul>
@@ -76,21 +125,18 @@
                     </div>
                 </div>
             </div>
-        </main>
+        </section>
         
-        <!-- Big space is created by CSS margin-top -->
+        <!-- Footer -->
         <footer class="footer-container">
             <div class="footer-content">
                 <div class="citation">
                     Grzeszczyk, M. K., Blanco, R., Adamczyk, P., Kus, M., Marek, S., Pręcikowski, R., & Lisowska, A. (2023). CogWear: Can we detect cognitive effort with consumer-grade wearables? (Version 1.0.0) [Data set]. PhysioNet. https://physionet.org/content/consumer-grade-wearables/1.0.0/
                 </div>
-                
             </div>
         </footer>
     </div>
     
     <script src="interactive_viz.js"></script>
-    <script src="dashboard.js"></script>
-    
 </body>
 </html>

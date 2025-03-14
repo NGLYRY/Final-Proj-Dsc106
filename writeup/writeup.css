@@ -2,7 +2,7 @@
 @import url(https://fonts.googleapis.com/css?family=Press+Start+2P);
 
 /* Apply the NES font to all elements */
-body, h1, h2, h3, ul, label, input, span, div, nav, a {
+body, h1, h2, h3, ul, label, input, span, nav, a {
     font-family: 'Press Start 2P', cursive;
 }
 
@@ -16,9 +16,15 @@ body {
     max-width: 1200px;
 }
 
-p, li {
+div {
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    font-size: 1.5em;
+    font-size: 20px;
+    text-align: center;
+}
+
+p, li{
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 20px;
     text-align: left;
 }
 
@@ -71,100 +77,93 @@ h1, h2, h3 {
     flex: 2;
 }
 
-/* Hide all narratives by default */
 .narrative {
-    display: none;
-}
-
-/* Show only active narratives */
-.narrative.active {
     display: block;
 }
 
-/* Prevent text selection on clickable elements */
-.tab-item, .toggle-options label {
-    user-select: none;
-    cursor: url('cursor.png'), auto; /* Use custom cursor */
+
+/* Add these styles for the new scrolling layout */
+
+.viz-section {
+    min-height: 100vh;
+    padding: 2rem 1rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #ccc;
+    scroll-margin-top: 1rem;
 }
 
-/* Basic tab layout */
-.timeline-tabs {
+.section-content {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.viz-container {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+}
+
+.narrative-panel {
+    flex: 2;
+    padding: 1rem;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+}
+
+.visualization {
+    width: 100%;
+    height: 500px; /* Increased from 400px to 500px */
+    margin-top: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.data-toggle {
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    background: #eee;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.data-toggle label {
+    margin-right: 1rem;
+    cursor: pointer;
+}
+
+.scroll-indicator {
+    position: sticky;
+    top: 0;
+    background: white;
+    padding: 1rem;
     display: flex;
     justify-content: center;
+    gap: 2rem;
+    z-index: 100;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-/* Graph text styling - apply Gill Sans to all SVG text elements */
-svg text {
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, sans-serif !important;
-    font-size: 12px;
+.scroll-indicator a {
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    color: #333;
 }
 
-/* Style specific elements in the graph */
-.axis text {
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, sans-serif !important;
-    fill: #333;
+.scroll-indicator a.active {
+    background: #209cee;
+    color: white;
 }
 
-.axis-label, .legend text {
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, sans-serif !important;
-    font-weight: 500;
+@media (max-width: 768px) {
+    .section-content {
+        flex-direction: column;
+    }
 }
-
-/* Chart title styling */
-svg .chart-title {
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, sans-serif !important;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-/* Tab hover effect with blinking select button */
-.tab-item {
-    position: relative;
-    padding-left: 30px; /* Make space for the button */
-    transition: all 0.3s ease;
-}
-
-/* Create the select button indicator */
-.tab-item::before {
-    content: '';
-    position: absolute;
-    left: 5px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 20px; /* Adjust based on actual image size */
-    height: 20px; /* Adjust based on actual image size */
-    background-image: url('select_button.png'); /* Make sure this path is correct */
-    background-size: contain;
-    background-repeat: no-repeat;
-    opacity: 0; /* Hidden by default */
-    transition: opacity 0.2s;
-}
-
-/* Show and animate the indicator on hover */
-.tab-item:hover::before {
-    opacity: 1;
-    animation: blink 0.8s infinite;
-}
-
-/* Define the blinking animation */
-@keyframes blink {
-    0% { opacity: 1; }
-    50% { opacity: 0.3; }
-    100% { opacity: 1; }
-}
-
-/* Add proper spacing between tabs */
-.tab-item {
-    margin: 0 15px;
-    padding: 8px 0 8px 30px; /* Added left padding for the icon */
-}
-
-.tab-separator {
-    color: #bdc3c7;
-    font-size: 0.8em;
-    vertical-align: middle;
-}
-
 /* Add big space before footer */
 .footer-container {
     margin-top: 80px; /* Large gap before footer */
@@ -185,4 +184,29 @@ svg .chart-title {
     max-width: 800px;
     margin: 0 auto;
     padding: 10px 20px;
+}
+
+/* Tooltip styles for hover information */
+.tooltip {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 15px;
+    border-radius: 4px;
+    pointer-events: none;
+    font-family: monospace; /* Pixel-perfect monospace font */
+    font-size: 20px; /* Bigger text */
+    line-height: 1.6;
+    z-index: 100;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+    border: 2px solid #209cee; /* Blue border to match title */
+    text-align: left;
+    min-width: 220px;
+}
+
+.tooltip strong {
+    color: #209cee; /* Blue color to match title */
+    font-weight: bold;
+    display: inline-block;
+    margin-right: 5px;
 }
