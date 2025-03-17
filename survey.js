@@ -1,9 +1,9 @@
-// Things to make
-// 1. The survey window that will change the page after each question is answered
-// 2. Make the survey transition to the second survey page that will be gamified
-// 3. Make the survey transition to the writeup page
+console.log("survey.js loaded");
 
 const survey = document.querySelector('.survey');
+let startTime = null;
+let endTime = null;
+let answeredQuestions = 0;
 
 const url = '../lib/questions.json';
 async function fetchJSON(url) {
@@ -71,6 +71,51 @@ function createQuestion(question, index) {
         ul.appendChild(li);
         // make the next question visible when an answer is chosen 
         input.addEventListener('change', function () {
+            if (!startTime) {
+                startTime = new Date();
+            }
+
+            const checkboxes = document.querySelectorAll(`input[name="question${index + 1}"]`);
+            checkboxes.forEach(checkbox => {
+                if (checkbox !== this) {
+                    checkbox.checked = false;
+                }
+            });
+
+            if (this.checked) {
+                answeredQuestions++;
+            } else {
+                answeredQuestions--;
+            }
+
+            if (answeredQuestions === 5) {
+                endTime = new Date();
+                const timeTaken = (endTime - startTime) / 1000; // Time in seconds
+                localStorage.setItem('survey1Time', timeTaken);
+                console.log(`Gamified Survey: ${timeTaken} seconds`);
+
+                // Display the times at the end
+                const survey2Time = localStorage.getItem('survey2Time');
+                document.getElementById('survey1Time').textContent = `Time taken for Gamified Survey: ${timeTaken} seconds`;
+                document.getElementById('survey2Time').textContent = `Time taken for Regular Survey: ${survey2Time} seconds`;
+                document.getElementById('time-results').style.display = 'block';
+
+                const timeDifference = timeTaken - survey2Time;
+                const comparisonText = timeDifference > 0
+                    ? `It took you ${timeDifference.toFixed(2)} more seconds to complete the Gamified Survey.`
+                    : `It took you ${Math.abs(timeDifference).toFixed(2)} less seconds to complete the Gamified Survey.`;
+                document.getElementById('comparison-text').textContent = comparisonText;
+
+                document.getElementById('time-results').style.display = 'block';
+
+                // Trigger confetti
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            }
+
             if (input.checked) {
                 const nextQuestion = document.querySelector(`.q${index + 2}`);
                 if (nextQuestion) {
@@ -95,7 +140,6 @@ function createSurvey(questions) {
     const checkboxes = document.querySelectorAll('.custom-checkbox input[type="checkbox"]');
     const progressBar = document.getElementById('survey-progress');
     const totalQuestions = questions.length;
-    let answeredQuestions = 0;
 
     const progressColors = ['is-error', 'is-warning', 'is-primary', 'is-success', 'is-pattern'];
 
