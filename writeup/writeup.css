@@ -210,3 +210,58 @@ h1, h2, h3 {
     display: inline-block;
     margin-right: 5px;
 }
+
+.brainwave-container {
+    font-family: 'Gill Sans', sans-serif;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.controls {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#wave-select {
+    padding: 8px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: 'Gill Sans', sans-serif;
+    font-size: 16px;
+    background-color: white;
+}
+
+label {
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+#brainwave-visualization {
+    width: 100%;
+    min-height: 600px;
+    margin: 20px 0;
+}
+
+.brainwave-container .controls {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.error-message {
+    color: #d63031;
+    padding: 20px;
+    text-align: center;
+    font-size: 18px;
+}
+
+
+.hover-line {
+    pointer-events: none;
+}
+
+.cog-point, .sur-point {
+    pointer-events: none;
+    transition: r 0.1s ease-out;
+}

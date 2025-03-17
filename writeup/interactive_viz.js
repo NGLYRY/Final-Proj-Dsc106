@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', function() {
     createSectionChart('baseline');
     createSectionChart('cognitive');
     createSectionChart('survey');
+
+    initBrainwaveViz();
     
     // Set up scroll behavior
     setupScrollingBehavior();
@@ -358,3 +360,481 @@ function setupScrollingBehavior() {
         });
     });
 }
+
+function initBrainwaveViz() {
+    // Set up the dropdown listener
+    const waveSelect = document.getElementById('wave-select');
+    waveSelect.addEventListener('change', function() {
+        updateBrainwaveViz(this.value);
+    });
+    
+    // Initialize with first option (alpha)
+    updateBrainwaveViz('alpha');
+}
+
+function updateBrainwaveViz(waveType) {
+    // Clear previous visualization
+    const container = document.getElementById('brainwave-visualization');
+    container.innerHTML = '';
+    
+    console.log(`Updating brain wave visualization for wave type: ${waveType}`);
+    
+    // Define layout parameters
+    const margin = {top: 40, right: 30, bottom: 50, left: 60};
+    const vizWidth = container.clientWidth;
+    const width = (vizWidth / 2) - margin.left - margin.right - 20; // Add spacing
+    const height = 250 - margin.top - margin.bottom; // Smaller height for each chart
+    const locations = ['af7', 'af8', 'tp9', 'tp10'];
+    const phases = ['pre', 'post'];
+    
+    // Use fixed maximum time as requested
+    const maxTime = 235.960938; 
+    
+    // Create grid layout 
+    const grid = d3.select(container)
+        .append('div')
+        .style('display', 'grid')
+        .style('grid-template-columns', 'repeat(2, 1fr)')
+        .style('grid-gap', '20px');
+    
+    // Title for columns
+    const header = grid.append('div')
+        .style('grid-column', 'span 2')
+        .style('text-align', 'center')
+        .style('margin-bottom', '10px');
+    
+    header.append('div')
+        .style('display', 'flex')
+        .style('justify-content', 'space-around');
+        
+    header.select('div')
+        .selectAll('.title')
+        .data(['Pre-Gamified', 'Post-Gamified'])
+        .enter()
+        .append('div')
+        .attr('class', 'title')
+        .style('font-family', "'Gill Sans', sans-serif")
+        .style('font-size', '18px')
+        .style('font-weight', 'bold')
+        .text(d => d);
+    
+    // File paths - keep the same paths
+    const filePaths = {
+        pre_cog: '../brain_waves/pre_cog_mean.csv',
+        pre_sur: '../brain_waves/pre_sur_mean.csv',
+        post_cog: '../brain_waves/post_cog_mean.csv',
+        post_sur: '../brain_waves/post_sur_mean.csv'
+    };
+    
+    // Load all data files
+    Promise.all([
+        d3.csv(filePaths.pre_cog),
+        d3.csv(filePaths.pre_sur),
+        d3.csv(filePaths.post_cog),
+        d3.csv(filePaths.post_sur)
+    ]).then(function([preCogData, preSurData, postCogData, postSurData]) {
+        
+        // Process the data - just extract values without modifying them
+        const processedData = {
+            pre_cog: processWaveData(preCogData, waveType, locations),
+            pre_sur: processWaveData(preSurData, waveType, locations),
+            post_cog: processWaveData(postCogData, waveType, locations),
+            post_sur: processWaveData(postSurData, waveType, locations)
+        };
+        
+        // Create a chart for each location
+        locations.forEach((location, idx) => {
+            phases.forEach((phase, phaseIdx) => {
+                // Create chart container
+                const chartDiv = grid.append('div')
+                    .style('width', '100%')
+                    .style('height', '100%');
+                
+                // Create SVG
+                const svg = chartDiv.append('svg')
+                    .attr('width', width + margin.left + margin.right)
+                    .attr('height', height + margin.top + margin.bottom)
+                    .append('g')
+                    .attr('transform', `translate(${margin.left},${margin.top})`);
+                
+                // Add title
+                svg.append('text')
+                    .attr('x', width / 2)
+                    .attr('y', -margin.top / 2)
+                    .attr('text-anchor', 'middle')
+                    .style('font-family', "'Gill Sans', sans-serif")
+                    .style('font-size', '14px')
+                    .style('font-weight', 'bold')
+                    .text(`${location.toUpperCase()}`);
+
+                svg.append('text')
+                    .attr('x', width / 2)
+                    .attr('y', height + margin.bottom - 10)
+                    .attr('text-anchor', 'middle')
+                    .style('font-family', "'Gill Sans', sans-serif")
+                    .style('font-size', '12px')
+                    .text('Time (seconds)');
+
+                // Add y-axis label
+                svg.append('text')
+                    .attr('transform', 'rotate(-90)')
+                    .attr('x', -height / 2)
+                    .attr('y', -margin.left + 15)
+                    .attr('text-anchor', 'middle')
+                    .style('font-family', "'Gill Sans', sans-serif")
+                    .style('font-size', '12px')
+                    .text('Amplitude');
+                // Add legend
+                const legend = svg.append('g')
+                    .attr('class', 'legend')
+                    .attr('transform', `translate(${width - 100}, 10)`);
+
+                legend.append('line')
+                    .attr('x1', 0)
+                    .attr('x2', 20)
+                    .attr('y1', 0)
+                    .attr('y2', 0)
+                    .attr('stroke', '#ff6b6b')
+                    .attr('stroke-width', 2.5);
+
+                legend.append('line')
+                    .attr('x1', 0)
+                    .attr('x2', 20)
+                    .attr('y1', 20)
+                    .attr('y2', 20)
+                    .attr('stroke', '#4dabf7')
+                    .attr('stroke-width', 2.5);
+
+                legend.append('text')
+                    .attr('x', 25)
+                    .attr('y', 4)
+                    .style('font-family', "'Gill Sans', sans-serif")
+                    .style('font-size', '12px')
+                    .text('Cognitive');
+
+                legend.append('text')
+                    .attr('x', 25)
+                    .attr('y', 24)
+                    .style('font-family', "'Gill Sans', sans-serif")
+                    .style('font-size', '12px')
+                    .text('Survey');
+                // Get data for this electrode
+                const cogTimeSeries = processedData[`${phase}_cog`][location] || [];
+                const surTimeSeries = processedData[`${phase}_sur`][location] || [];
+                
+                // If either data series is empty, show an error message
+                if (cogTimeSeries.length === 0 || surTimeSeries.length === 0) {
+                    svg.append('text')
+                        .attr('x', width / 2)
+                        .attr('y', height / 2)
+                        .attr('text-anchor', 'middle')
+                        .style('font-family', "'Gill Sans', sans-serif")
+                        .style('font-size', '12px')
+                        .style('fill', 'red')
+                        .text(`No data available for ${location.toUpperCase()}`);
+                    return;
+                }
+                
+                // Only filter by time, not by value range
+                const filteredCogTimeSeries = cogTimeSeries.filter(d => d.time_sec <= maxTime);
+                const filteredSurTimeSeries = surTimeSeries.filter(d => d.time_sec <= maxTime);
+                
+                // Find combined domain for x and y
+                const allTimeSeries = [...filteredCogTimeSeries, ...filteredSurTimeSeries];
+                
+                // Use fixed time domain
+                const xDomain = [0, maxTime];
+                
+                // Calculate y domain with enough padding and ensure negative values show
+                const yValues = allTimeSeries.map(d => d.value);
+                const yMax = d3.max(yValues) || 0.1;
+                const yMin = d3.min(yValues) || -0.1;
+                
+                // Make sure we have a bit of padding on both ends
+                const padding = Math.max(Math.abs(yMax), Math.abs(yMin)) * 0.15;
+                const yDomain = [yMin - padding, yMax + padding];
+                
+                // Create scales
+                const x = d3.scaleLinear()
+                    .domain(xDomain)
+                    .range([0, width]);
+                
+                const y = d3.scaleLinear()
+                    .domain(yDomain)
+                    .range([height, 0]);
+                
+                // Add axes
+                svg.append('g')
+                    .attr('transform', `translate(0,${height})`)
+                    .call(d3.axisBottom(x))
+                    .style('font-family', "'Gill Sans', sans-serif")
+                    .style('font-size', '12px');
+                    
+                svg.append('g')
+                    .call(d3.axisLeft(y))
+                    .style('font-family', "'Gill Sans', sans-serif")
+                    .style('font-size', '12px');
+                
+                // Add gridlines
+                svg.append('g')
+                    .attr('class', 'grid')
+                    .attr('opacity', 0.1)
+                    .call(d3.axisLeft(y)
+                        .tickSize(-width)
+                        .tickFormat('')
+                    );
+                
+                // Create line generators with smoothing
+                const line = d3.line()
+                    .defined(d => !isNaN(d.value) && !isNaN(d.time_sec))
+                    .x(d => x(d.time_sec))
+                    .y(d => y(d.value))
+                    .curve(d3.curveMonotoneX);
+                
+                // Draw cognitive line
+                svg.append('path')
+                    .datum(filteredCogTimeSeries)
+                    .attr('fill', 'none')
+                    .attr('stroke', '#ff6b6b')
+                    .attr('stroke-width', 2.5)
+                    .attr('stroke-opacity', 0.8)
+                    .attr('d', line);
+
+                // Draw survey line
+                svg.append('path')
+                    .datum(filteredSurTimeSeries)
+                    .attr('fill', 'none')
+                    .attr('stroke', '#4dabf7')
+                    .attr('stroke-width', 2.5)
+                    .attr('stroke-opacity', 0.8) 
+                    .attr('d', line);
+                
+                addHoverInteraction(
+                    svg, 
+                    chartDiv, 
+                    width, 
+                    height, 
+                    x, 
+                    y, 
+                    filteredCogTimeSeries, 
+                    filteredSurTimeSeries
+                );
+                
+                // Add zero line if within domain
+                if (yDomain[0] <= 0 && yDomain[1] >= 0) {
+                    svg.append('line')
+                        .attr('x1', 0)
+                        .attr('y1', y(0))
+                        .attr('x2', width)
+                        .attr('y2', y(0))
+                        .attr('stroke', '#aaa')
+                        .attr('stroke-width', 1)
+                        .attr('stroke-dasharray', '4,4');
+                }
+            });
+        });
+    }).catch(function(error) {
+        console.error('Error loading brain wave data:', error);
+        container.innerHTML = `<div class="error-message">Error loading data. Please check console for details.</div>`;
+    });
+}
+// Process data once to improve performance
+function processWaveData(data, waveType, locations) {
+    const result = {};
+    
+    // For each location, extract the time series
+    locations.forEach(location => {
+        result[location] = [];
+        
+        // Get column name - columns are structured as WaveType_LOCATION (e.g. Alpha_AF7)
+        const formattedWaveType = waveType.charAt(0).toUpperCase() + waveType.slice(1);
+        const formattedLocation = location.toUpperCase();
+        const columnName = `${formattedWaveType}_${formattedLocation}`;
+        
+        // Check if column exists
+        if (data.length > 0 && !(columnName in data[0])) {
+            console.error(`Column ${columnName} not found in data!`);
+            console.log('Available columns:', Object.keys(data[0]).join(', '));
+            return;
+        }
+        
+        // Extract data from the CSV
+        data.forEach(row => {
+            if (row.time_sec && row[columnName]) {
+                // Parse as float and ensure it's not NaN
+                const timeVal = parseFloat(row.time_sec);
+                const dataVal = parseFloat(row[columnName]);
+                
+                if (!isNaN(timeVal) && !isNaN(dataVal)) {
+                    result[location].push({
+                        time_sec: timeVal,
+                        value: dataVal
+                    });
+                }
+            }
+        });
+        
+        // Sort by time
+        result[location].sort((a, b) => a.time_sec - b.time_sec);
+    });
+    
+    return result;
+}
+// Add this function after processWaveData
+function addHoverInteraction(svg, chartDiv, width, height, x, y, cogTimeSeries, surTimeSeries) {
+    // Create tooltip in the chart div
+    const tooltip = chartDiv.append('div')
+        .attr('class', 'tooltip')
+        .style('opacity', 0)
+        .style('position', 'absolute')
+        .style('background', 'rgba(0, 0, 0, 0.8)')
+        .style('color', 'white')
+        .style('padding', '8px')
+        .style('border-radius', '4px')
+        .style('font-size', '12px')
+        .style('pointer-events', 'none')
+        .style('z-index', 1000)
+        .style('border', '1px solid rgba(255,255,255,0.2)');
+
+    // Create a group for the hover elements
+    const hoverGroup = svg.append('g')
+        .attr('class', 'hover-elements');
+
+    // Add hover points to the SVG
+    const cogPoint = hoverGroup.append('circle')
+        .attr('class', 'cog-point')
+        .attr('r', 0)
+        .attr('fill', '#ff6b6b');
+
+    const surPoint = hoverGroup.append('circle')
+        .attr('class', 'sur-point')
+        .attr('r', 0)
+        .attr('fill', '#4dabf7');
+
+    // Add vertical line for hover
+    const verticalLine = hoverGroup.append('line')
+        .attr('class', 'hover-line')
+        .attr('y1', 0)
+        .attr('y2', height)
+        .style('stroke', '#666')
+        .style('stroke-width', 1)
+        .style('stroke-dasharray', '3,3')
+        .style('opacity', 0);
+
+    // Add invisible hover area
+    svg.append('rect')
+        .attr('width', width)
+        .attr('height', height)
+        .style('fill', 'none')
+        .style('pointer-events', 'all')
+        .on('mousemove', function(event) {
+            const [mouseX] = d3.pointer(event);
+            const x0 = x.invert(mouseX);
+
+            // Find nearest points using binary search
+            const cogIndex = d3.bisector(d => d.time_sec).left(cogTimeSeries, x0);
+            const surIndex = d3.bisector(d => d.time_sec).left(surTimeSeries, x0);
+
+            const cogData = cogTimeSeries[cogIndex];
+            const surData = surTimeSeries[surIndex];
+
+            if (cogData && surData) {
+                // Calculate difference between Survey and Cognitive values
+                const difference = (surData.value - cogData.value).toFixed(4);
+                const differenceColor = difference > 0 ? '#4dabf7' : '#ff6b6b';
+
+                // Show vertical line
+                verticalLine
+                    .attr('x1', mouseX)
+                    .attr('x2', mouseX)
+                    .style('opacity', 1);
+
+                // Update points
+                cogPoint
+                    .attr('cx', x(cogData.time_sec))
+                    .attr('cy', y(cogData.value))
+                    .attr('r', 4)
+                    .style('opacity', 1);
+
+                surPoint
+                    .attr('cx', x(surData.time_sec))
+                    .attr('cy', y(surData.value))
+                    .attr('r', 4)
+                    .style('opacity', 1);
+
+                // Update tooltip with difference
+                tooltip
+                    .style('opacity', 1)
+                    .html(`<strong>Time:</strong> ${x0.toFixed(2)}s<br>` +
+                          `<strong>Cognitive:</strong> ${cogData.value.toFixed(4)}<br>` +
+                          `<strong>Survey:</strong> ${surData.value.toFixed(4)}<br>` +
+                          `<strong>Difference:</strong> <span style="color:${differenceColor}">${difference}</span>`)
+                    .style('left', (event.pageX + 10) + 'px')
+                    .style('top', (event.pageY - 10) + 'px');
+            }
+        })
+        .on('mouseout', function() {
+            // Hide all hover elements
+            verticalLine.style('opacity', 0);
+            cogPoint.attr('r', 0).style('opacity', 0);
+            surPoint.attr('r', 0).style('opacity', 0);
+            tooltip.style('opacity', 0);
+        });
+}
+
+// Add this helper function
+function findNearestPoint(data, x0, y0, xScale, yScale) {
+    if (!data.length) return { point: null, distance: Infinity };
+    
+    let nearest = data[0];
+    let minDist = Infinity;
+    
+    data.forEach(d => {
+        const dx = xScale(d.time_sec) - xScale(x0);
+        const dy = yScale(d.value) - yScale(y0);
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < minDist) {
+            minDist = dist;
+            nearest = d;
+        }
+    });
+    
+    return { 
+        point: nearest, 
+        distance: minDist / Math.sqrt(xScale.range()[1] * xScale.range()[1] + 
+                                    yScale.range()[0] * yScale.range()[0]) 
+    };
+}
+
+
+// Helper function to extract time series data for a specific wave type and location
+function extractTimeSeriesData(data, waveType, location) {
+    const result = [];
+    
+    // Format the column name based on CSV structure
+    const formattedWaveType = waveType.charAt(0).toUpperCase() + waveType.slice(1);
+    const formattedLocation = location.toUpperCase();
+    const columnName = `${formattedWaveType}_${formattedLocation}`;
+    
+    // Extract data from the correctly named column
+    data.forEach(row => {
+        if (row.time_sec && row[columnName]) {
+            // Force parse as float and ensure it's not NaN
+            const timeVal = parseFloat(row.time_sec);
+            const dataVal = parseFloat(row[columnName]);
+            
+            if (!isNaN(timeVal) && !isNaN(dataVal)) {
+                result.push({
+                    time_sec: timeVal,
+                    value: dataVal
+                });
+            }
+        }
+    });
+    
+    // Sort by time and apply light smoothing if there are enough points
+    const sortedResult = result.sort((a, b) => a.time_sec - b.time_sec);
+    
+    return sortedResult;
+}
+
