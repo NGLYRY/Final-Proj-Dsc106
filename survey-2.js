@@ -93,6 +93,6 @@ function createSurvey(questions) {
     });
 }
 
-fetchJSON('../lib/questions.json').then((questions) => {
+fetchJSON('./lib/questions.json').then((questions) => {
     createSurvey(questions);
 });
