@@ -265,3 +265,11 @@ label {
     pointer-events: none;
     transition: r 0.1s ease-out;
 }
+
+#time-distribution {
+    width: 100%;
+    min-height: 500px;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+}

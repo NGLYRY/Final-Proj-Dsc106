@@ -3,8 +3,9 @@ document.addEventListener('DOMContentLoaded', function() {
     createSectionChart('baseline');
     createSectionChart('cognitive');
     createSectionChart('survey');
-
+    createTimeDistributionPlot();
     initBrainwaveViz();
+    
     
     // Set up scroll behavior
     setupScrollingBehavior();
@@ -807,34 +808,185 @@ function findNearestPoint(data, x0, y0, xScale, yScale) {
 }
 
 
-// Helper function to extract time series data for a specific wave type and location
-function extractTimeSeriesData(data, waveType, location) {
-    const result = [];
+function createTimeDistributionPlot() { 
+    const container = document.getElementById('time-distribution');
+    if (!container) {
+        console.error("Container not found");
+        return;
+    }
     
-    // Format the column name based on CSV structure
-    const formattedWaveType = waveType.charAt(0).toUpperCase() + waveType.slice(1);
-    const formattedLocation = location.toUpperCase();
-    const columnName = `${formattedWaveType}_${formattedLocation}`;
+    container.innerHTML = '';
     
-    // Extract data from the correctly named column
-    data.forEach(row => {
-        if (row.time_sec && row[columnName]) {
-            // Force parse as float and ensure it's not NaN
-            const timeVal = parseFloat(row.time_sec);
-            const dataVal = parseFloat(row[columnName]);
-            
-            if (!isNaN(timeVal) && !isNaN(dataVal)) {
-                result.push({
-                    time_sec: timeVal,
-                    value: dataVal
-                });
-            }
-        }
-    });
-    
-    // Sort by time and apply light smoothing if there are enough points
-    const sortedResult = result.sort((a, b) => a.time_sec - b.time_sec);
-    
-    return sortedResult;
-}
+    const margin = {top: 40, right: 120, bottom: 50, left: 100}; 
+    const width = Math.max(container.clientWidth - margin.left - margin.right, 400); // Increased minimum width
+    const height = 400 - margin.top - margin.bottom;
 
+    const svg = d3.select('#time-distribution')
+        .append('svg')
+        .attr('width', width + margin.left + margin.right)
+        .attr('height', height + margin.top + margin.bottom)
+        .append('g')
+        .attr('transform', `translate(${margin.left},${margin.top})`);
+
+    d3.csv('../survey/survey_completion_times.csv')
+        .then(data => {
+            const processedData = data.map((d, i) => ({
+                pre: parseFloat(d.pre),
+                post: parseFloat(d.post),
+                difference: parseFloat(d.time_difference),
+                id: `Participant ${i + 1}`  // Changed to numbered participants
+            })).filter(d => !isNaN(d.pre) && !isNaN(d.post) && !isNaN(d.difference));
+
+            // Create scales
+            const x = d3.scaleLinear()
+                .domain([0, d3.max(processedData, d => Math.max(d.pre, d.post))])
+                .range([0, width]);
+
+            const y = d3.scaleBand()
+                .domain(processedData.map(d => d.id))
+                .range([0, height])
+                .padding(0.5);
+
+            // Add axes
+            svg.append('g')
+                .attr('transform', `translate(0,${height})`)
+                .call(d3.axisBottom(x))
+                .style('font-family', "'Gill Sans', sans-serif")
+                .style('font-size', '12px');
+
+            svg.append('g')
+                .call(d3.axisLeft(y))  // Add y-axis
+                .style('font-family', "'Gill Sans', sans-serif")
+                .style('font-size', '12px');
+
+            // Add lines between points
+            svg.selectAll('.dumbbell-line')
+                .data(processedData)
+                .enter()
+                .append('line')
+                .attr('class', 'dumbbell-line')
+                .attr('x1', d => x(d.pre))
+                .attr('x2', d => x(d.post))
+                .attr('y1', d => y(d.id))
+                .attr('y2', d => y(d.id))
+                .attr('stroke', '#aaa')
+                .attr('stroke-width', 1);
+
+            // Add pre points
+            svg.selectAll('.pre-point')
+                .data(processedData)
+                .enter()
+                .append('circle')
+                .attr('class', 'pre-point')
+                .attr('cx', d => x(d.pre))
+                .attr('cy', d => y(d.id))
+                .attr('r', 5)
+                .attr('fill', '#ff6b6b');
+
+            // Add post points
+            svg.selectAll('.post-point')
+                .data(processedData)
+                .enter()
+                .append('circle')
+                .attr('class', 'post-point')
+                .attr('cx', d => x(d.post))
+                .attr('cy', d => y(d.id))
+                .attr('r', 5)
+                .attr('fill', '#4dabf7');
+
+            // Add labels
+            svg.append('text')
+                .attr('x', width / 2)
+                .attr('y', height + margin.bottom - 10)
+                .attr('text-anchor', 'middle')
+                .style('font-family', "'Gill Sans', sans-serif")
+                .style('font-size', '14px')
+                .text('Completion Time (seconds)');
+
+            // Add title
+            svg.append('text')
+                .attr('x', width / 2)
+                .attr('y', -margin.top / 2)
+                .attr('text-anchor', 'middle')
+                .style('font-family', "'Gill Sans', sans-serif")
+                .style('font-size', '16px')
+                .style('font-weight', 'bold')
+                .text('Survey Completion Times: Pre vs Post Gamification');
+
+            // Add legend
+            const legend = svg.append('g')
+                .attr('font-family', "'Gill Sans', sans-serif")
+                .attr('font-size', '12px')
+                .attr('text-anchor', 'start')
+                .selectAll('g')
+                .data(['Pre-Gamified', 'Post-Gamified'])
+                .enter()
+                .append('g')
+                .attr('transform', (d, i) => `translate(${width + 10},${i * 20 + 10})`);
+
+            legend.append('circle')
+                .attr('r', 5)
+                .attr('fill', d => d === 'Pre-Gamified' ? '#ff6b6b' : '#4dabf7');
+
+            legend.append('text')
+                .attr('x', 10)
+                .attr('y', 4)
+                .text(d => d);
+
+            // Add hover interactions
+            const tooltip = d3.select('#time-distribution')
+                .append('div')
+                .attr('class', 'tooltip')
+                .style('opacity', 0)
+                .style('position', 'absolute')
+                .style('background', 'rgba(0, 0, 0, 0.8)')
+                .style('color', 'white')
+                .style('padding', '8px')
+                .style('border-radius', '4px')
+                .style('font-size', '12px')
+                .style('pointer-events', 'none');
+
+            // Add hover interaction for points
+            // Update the hover interaction
+            svg.selectAll('circle')
+            .on('mouseover', function(event, d) {
+                d3.select(this)
+                    .attr('r', 7)
+                    .style('stroke', 'white')
+                    .style('stroke-width', 2);
+                
+                tooltip.transition()
+                    .duration(200)
+                    .style('opacity', .9);
+                
+                const timeType = this.classList.contains('pre-point') ? 'Pre' : 'Post';
+                const time = this.classList.contains('pre-point') ? d.pre : d.post;
+                const diffColor = d.difference > 0 ? '#4dabf7' : '#ff6b6b';
+                
+                tooltip.html(`
+                    ${timeType}-Gamified<br>
+                    Time: ${time.toFixed(2)}s<br>
+                    <span style="color:${diffColor}">
+                        Difference: ${Math.abs(d.difference).toFixed(2)}s 
+                    </span>`)
+                    .style('left', (event.pageX + 10) + 'px')
+                    .style('top', (event.pageY - 28) + 'px');
+            })
+            .on('mouseout', function() {
+                d3.select(this)
+                    .attr('r', 5)
+                    .style('stroke', 'none');
+                
+                tooltip.transition()
+                    .duration(500)
+                    .style('opacity', 0);
+            });
+        })
+        .catch(error => {
+            console.error('Error creating time distribution plot:', error);
+            container.innerHTML = `
+                <div class="error-message" style="color: red; padding: 20px;">
+                    Error loading survey completion time data: ${error.message}
+                </div>`;
+        });
+}
