@@ -115,7 +115,7 @@
                 
                 <div class="narrative-panel">
                     <div class="narrative">
-                        <p>The last portion of the study is the survey gamification experiment. This shows the differences in cognitive activity between a gamified survey and the non-gamified survey.</p>
+                        <p>Participants were divided into two groups: one completed the pre-gamified survey, while the other completed the post-gamified survey. Two weeks later, the groups switched.</p>
                         <p><strong>Key insights:</strong></p>
                         <ul>
                             <li>BVP: Both post and pre gamified survey saw similar levels of BVP.</li>
@@ -125,9 +125,46 @@
                 </div>
             </div>
         <div id="time-distribution"></div>
-        </section>
+        <p>A plot of each participant's post-gamified and pre-gamified survey completion times. The results show that most participants finished the post-gamified survey faster, averaging <strong>88 seconds quicker.</strong></p>
+    </section>
+    
+    <!-- Brain Wave Information Section -->
+    <section class="brainwave-info">
+        <h2>Understanding Brain Waves</h2>
+        <div class="wave-types">
+            <h3>Brain Wave Types:</h3>
+            <ul>
+                <li><strong>Delta Waves (0.5-4Hz):</strong> Associated with deep sleep states</li>
+                <li><strong>Theta Waves (4-8Hz):</strong> Indicate deeply relaxed and inward focused states</li>
+                <li><strong>Alpha Waves (8-13Hz):</strong> Reflect very relaxed brain states and passive attention</li>
+                <li><strong>Beta Waves (13-32Hz):</strong> Show anxiety dominant, active, external attention, and relaxed brain states</li>
+                <li><strong>Gamma Waves (32-100Hz):</strong> Indicate concentration states</li>
+            </ul>
+        </div>
+
+        <div class="electrode-info">
+            <h3>EEG Electrode Locations:</h3>
+            <p>We analyzed EEG data from four key electrodes: AF7, AF8, TP9, and TP10</p>
+            <div class="electrode-details">
+                <h4>Frontal Electrodes (AF7 and AF8):</h4>
+                <ul>
+                    <li>Capture frontal lobe activity crucial for decision-making, attention, and working memory</li>
+                    <li>Higher mental workload shows increased theta and beta activity</li>
+                    <li>Lower theta power during gamified surveys suggests reduced cognitive demand</li>
+                </ul>
+
+                <h4>Temporal Electrodes (TP9 and TP10):</h4>
+                <ul>
+                    <li>Monitor temporal lobe activity involved in auditory processing, language, and memory</li>
+                    <li>Cognitive stress correlates with increased high beta and gamma activity</li>
+                    <li>Lower beta and gamma activity indicates reduced cognitive strain</li>
+                </ul>
+            </div>
+        </div>
+    </section>
         
         <div class="brainwave-container">
+            <p>Gamified surveys may boost theta band activity (associated with relaxed focus and flow) and lower beta activity (linked to stress and mental effort). Explore the graphs below to see if this effect holds!</p>
             <div class="controls">
               <label for="wave-select">Select Brain Wave Type: </label>
               <select id="wave-select">
@@ -140,6 +177,12 @@
             </div>
             <div id="brainwave-visualization"></div>
           </div>
+            <!-- Call to Action Section -->
+          <section class="cta-section">
+            <p class="cta-text">Now that you've seen how brain wave patterns shift, it's your turn to experience the gamified survey firsthand. Try it out and discover the difference for yourself!</p>
+            <a href="../survey/index.html" class="nes-btn is-primary">Take the Gamified Survey →</a>
+          </section>
+
         <!-- Footer -->
         <footer class="footer-container">
             <div class="footer-content">

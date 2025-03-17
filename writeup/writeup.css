@@ -273,3 +273,60 @@ label {
     padding: 20px;
     background: white;
 }
+
+.brainwave-info {
+    padding: 2rem;
+    margin: 2rem 0;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+.brainwave-info h2 {
+    margin-bottom: 1.5rem;
+}
+
+.wave-types, .electrode-info {
+    margin-bottom: 2rem;
+}
+
+.electrode-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.electrode-details h4 {
+    margin-bottom: 1rem;
+}
+
+.brainwave-info ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.brainwave-info li {
+    margin-bottom: 0.5rem;
+}
+
+.cta-section {
+    text-align: center;
+    padding: 3rem 1rem;
+    margin: 2rem 0;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+.cta-text {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.cta-section .nes-btn {
+    padding: 0.75rem 2rem;
+    transition: transform 0.2s;
+}
+
+.cta-section .nes-btn:hover {
+    transform: translateY(-2px);
+}
