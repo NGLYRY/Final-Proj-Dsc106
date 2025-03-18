@@ -166,6 +166,7 @@ li {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
+    min-height: 600px; /* Adjust the height as needed */
 }
 
 .survey-container .nes-progress {
@@ -238,9 +239,9 @@ li {
     width: 80%;
     margin: 20px auto;
     color: black;
-    height: 230px;
+    height: auto; /* Allow the height to adjust based on content */
     border-radius: 3px;
-    /* box-shadow: 1px 1px 5px 1px rgba(0,0,0,0.2); */
+    padding: 20px; /* Add padding to increase the height */
 }
 
 .survey-2, .survey-2 * {
@@ -256,6 +257,7 @@ li {
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #f9f9f9;
+    min-height: 150px; /* Adjust the height as needed */
 }
 
 .survey-2 .question h3 { /* question title */
@@ -266,4 +268,9 @@ li {
 .survey-2 .question p { /* question */
     margin: 0 0 10px 0;
     font-size: 20px;
+}
+
+.cta-section .nes-btn {
+    padding: 0.75rem 2rem;
+    transition: transform 0.2s;
 }
