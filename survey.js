@@ -106,6 +106,11 @@ function createQuestion(question, index) {
                     : `It took you ${Math.abs(timeDifference).toFixed(2)} less seconds to complete the Gamified Survey.`;
                 document.getElementById('comparison-text').textContent = comparisonText;
 
+                const analysisText = timeDifference < 0
+                ? "The results of your survey completion times align with the data taken from the study. The effect of gamification can be seen in the improved performance and efficiency of your work. These findings suggest that incorporating game-like elements into a task can help reduce cognitive load, making it feel less tedious and easier to complete. These findings highlight the potential benefits of gamification in streamlining processes, enhancing motivation, and improving overall task completion rates."
+                : "Although the taken for you to complete the gamified survey was longer than the non-gamified survey, your results still align with the data taken from the study. Gamification is typically associated with improved efficiency, but your results suggest that interactive elements may sometimes increase engagement at the cost of speed with the addition of other possible external factors. This could indicate that more time was spent processing information, exploring features, or engaging with the content. These findings highlight the complexity of gamification's impact and suggest that while it can enhance user experience, it may not always lead to faster task completion.";
+            
+                document.getElementById('analysis-text').textContent = analysisText;
                 document.getElementById('time-results').style.display = 'block';
 
                 // Trigger confetti
